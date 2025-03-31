@@ -6,7 +6,6 @@ public class HealthRecord
     public Dictionary<string, List<Datetime>> medicationAdministered = new Dictionary<string, List<Datetime>>();
     public List<DateTime> vetVisits = new List<DateTime>();
     public Dictionary<string,List<DateTime>> vaccinationRecords = new Dictionary<string, List<DateTime>>();
-    public Dictionary<string,DateTime> medicationDue  = new Dictionary<string,DateTime>();
 
 
 
@@ -38,8 +37,20 @@ public class HealthRecord
         vetVisits.Add(vetApptDate);
     }
 
-    public void GiveMedication(string medication){
-        
+    public void EnterVaccinationRecord(){
+        Console.Write("Enter vaccionation: ")
+        string vaccination = Console.ReadLine();
+
+        Console.Write("Enter date given (MM/DD/YYYY): ");
+        DateTime vaccinationDate = DateTime.Parse(Console.ReadLine());
+
+        if(!vaccinationRecords.ContainsKey(vaccination)){
+            List<DateTime> dates = new List<DateTime>();
+            dates.Add(vaccinationDate);
+            vaccinationRecords.Add(vaccination,dates);
+        }else{
+            vaccinationRecords[vaccination].Add(vaccinationDate);
+        }
     }
 
 }

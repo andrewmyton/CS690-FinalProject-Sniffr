@@ -3,7 +3,7 @@
 public class HealthRecord
 {
     public Dictionary<string,int> medications = new Dictionary<string,int>();
-    public Dictionary<string, List<DateTime>> medicationAdministered = new Dictionary<string, List<Datetime>>();
+    public Dictionary<string, List<DateTime>> medicationAdministered = new Dictionary<string, List<DateTime>>();
     public List<DateTime> vetVisits = new List<DateTime>();
     public Dictionary<string,List<DateTime>> vaccinationRecords = new Dictionary<string, List<DateTime>>();
 
@@ -12,10 +12,12 @@ public class HealthRecord
     public void AddMedication(){
         Console.Write("Enter medication to add: ");
         string medication = Console.ReadLine();
-        medications.Add(medication);
+        
 
         Console.Write("How often is this medication given (in days): ");
         int interval = int.Parse(Console.ReadLine());
+
+        medications.Add(medication,interval);
 
         Console.Write("Enter last administration date (MM/DD/YYYY): ");
         DateTime dateAdministered = DateTime.Parse(Console.ReadLine());

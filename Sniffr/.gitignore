@@ -5,7 +5,7 @@
 
 # manually added
 .DS_Store
-
+list-of-pets.txt
 # dotenv files
 .env
 

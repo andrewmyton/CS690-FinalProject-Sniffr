@@ -3,7 +3,7 @@
 public class HealthRecord
 {
     public Dictionary<string,int> medications = new Dictionary<string,int>();
-    public Dictionary<string, List<Datetime>> medicationAdministered = new Dictionary<string, List<Datetime>>();
+    public Dictionary<string, List<DateTime>> medicationAdministered = new Dictionary<string, List<Datetime>>();
     public List<DateTime> vetVisits = new List<DateTime>();
     public Dictionary<string,List<DateTime>> vaccinationRecords = new Dictionary<string, List<DateTime>>();
 
@@ -17,7 +17,7 @@ public class HealthRecord
         Console.Write("How often is this medication given (in days): ");
         int interval = int.Parse(Console.ReadLine());
 
-        Console.Write("Enter last administration date (MM/DD/YYYY): ")
+        Console.Write("Enter last administration date (MM/DD/YYYY): ");
         DateTime dateAdministered = DateTime.Parse(Console.ReadLine());
 
         if(!medicationAdministered.ContainsKey(medication)){
@@ -38,7 +38,7 @@ public class HealthRecord
     }
 
     public void EnterVaccinationRecord(){
-        Console.Write("Enter vaccionation: ")
+        Console.Write("Enter vaccionation: ");
         string vaccination = Console.ReadLine();
 
         Console.Write("Enter date given (MM/DD/YYYY): ");

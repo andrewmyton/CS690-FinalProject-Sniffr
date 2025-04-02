@@ -14,5 +14,9 @@ public class PetManager
     
     }
 
+    public string ReadPets(){
+        string userList = File.ReadAllText("list-of-pets.txt");
+        return userList;
+    }
 
 }

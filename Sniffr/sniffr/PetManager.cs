@@ -10,7 +10,9 @@ public class PetManager
     public static void AddPet(){
         Console.Write("Enter a pet to manage: ");
         string petName = Console.ReadLine();
-        File.AppendAllText("list-of-pets.txt", petName + Environment.NewLine);
+        File.AppendAllText("list-of-pets.txt", Guid.NewGuid() + ":" + petName + Environment.NewLine);
     
     }
+
+
 }

@@ -22,13 +22,13 @@ class Program
         //     petManager.AddPet();
         // }
         
-        // // load a pet
-        // string users = File.ReadAllText("list-of-pets.txt");
-        // string[] userInfo = users.Split(":");
-        // Pet currentPet = new Pet();
-        // currentPet.uid = userInfo[0];
-        // currentPet.name = userInfo[1];
-        // currentPet.healthRecord = new HealthRecord();
+        // load a pet
+        string users = File.ReadAllText("list-of-pets.txt");
+        string[] userInfo = users.Split(":");
+        Pet currentPet = new Pet();
+        currentPet.uid = userInfo[0];
+        currentPet.name = userInfo[1];
+        currentPet.healthRecord = new HealthRecord();
         
         //start main menu
         var mainMenuChoice = AnsiConsole.Prompt(
@@ -50,6 +50,10 @@ class Program
                 new SelectionPrompt<string>()
                 .AddChoices(medicationOptions)
                 );
+                if (medicationChoice == "Add Medication"){
+                    currentPet.healthRecord.AddMedication();
+                    SaveMedicationData(currentPet);
+                }
             // if you choose Vet Records
             }else if (healthChoice == "Vet Records"){
                 var vetRecordChoice = AnsiConsole.Prompt(
@@ -74,19 +78,30 @@ class Program
         );
 
         }
-        
-        
-        
-
-      
-
-       
-
-        
-        
     
+    
+        
+     
+        
+
     }
+    
+   //save medication data
+   public static void SaveMedicationData(Pet currentPet){
+            var medicationData = currentPet.healthRecord.medications;
+            string jsonString = JsonSerializer.Serialize(medicationData);
+            File.AppendAllText("medications.txt",currentPet.uid + ":" + jsonString + Environment.NewLine);
+        }
+    
+    public static void LoadMedicationData(Pet currentPet){
+        string medicationsText = File.ReadAllText("medications.txt");
+        string jsonString = JsonSerializer.Deserialize<string>(medicationsText);
+        Console.WriteLine(jsonString);
+        
+    }
+
+}
 
   
 
-}
+

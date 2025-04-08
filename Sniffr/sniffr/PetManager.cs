@@ -15,6 +15,10 @@ public class PetManager
         Pet pet = new Pet();
         pet.name = petName;
         pet.uid = newUID;
+        Console.Write("Enter "+petName+"'s birthday (MM/DD/YYYY): ");
+        pet.dateOfBirth = DateTime.Parse(Console.ReadLine());
+
+        
     }
 
     public string ReadPets(){

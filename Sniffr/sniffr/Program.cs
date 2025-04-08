@@ -8,7 +8,13 @@ class Program
     static void Main(string[] args)
     {
         string[] mainMenu = {"Health", "Reminders"};
-        string[] healthChoices = {"Medication", "Vet Records", "Immunizations"};
+        string[] healthOptions = {"Medication", "Vet Records", "Immunizations"};
+        string[] medicationOptions = {"Add Medication", "View Medications"};
+        string[] vetRecordOptions = {"Add a Vet Visit", "View Vet Records"};
+        string[] immunizationOptions = {"Add New Immunication ", "View Immunization Schedule"};
+        string[] reminderOptions = {"Add Reminder", "Reminder List"};
+
+
 
         //  PetManager petManager = new PetManager();
 
@@ -24,16 +30,60 @@ class Program
         // currentPet.name = userInfo[1];
         // currentPet.healthRecord = new HealthRecord();
         
-        
-        var menuChoices = AnsiConsole.Prompt(
+        //start main menu
+        var mainMenuChoice = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-            .Title("How would like to manage your pet: ")
+            .Title("\nHow would like to manage your pet: ")
             .PageSize(10)
             .MoreChoicesText("[grey](Move up and down to select choice)[/]")
             .AddChoices(mainMenu));
         
+        // Main Menu: if you choose Health
+        if (mainMenuChoice == "Health"){
+            var healthChoice = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .AddChoices(healthOptions)
+            );
+            //if you choose Medication
+            if (healthChoice == "Medication"){
+                var medicationChoice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .AddChoices(medicationOptions)
+                );
+            // if you choose Vet Records
+            }else if (healthChoice == "Vet Records"){
+                var vetRecordChoice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .AddChoices(vetRecordOptions)
+                );
+            // if you choose Immunizations
+            }else if(healthChoice == "Immunizations"){
+                var immunizationChoice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .AddChoices(immunizationOptions)
+                );
+            }
 
-    
+        }//end of health choise
+
+        //Main Menu: if you choose Reminders
+        else if (mainMenuChoice == "Reminders"){
+            var reminderChoice = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .AddChoices(reminderOptions)
+        );
+
+        }
+        
+        
+        
+
+      
+
+       
+
+        
+        
     
     }
 

@@ -13,7 +13,6 @@ public class HealthRecord
         Console.Write("Enter medication to add: ");
         string medication = Console.ReadLine();
         
-
         Console.Write("How often is this medication given (in days): ");
         int interval = int.Parse(Console.ReadLine());
 

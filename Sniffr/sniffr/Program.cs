@@ -1,24 +1,27 @@
 ﻿namespace sniffr;
+using System.Text.Json;
 
 class Program
 {
     static void Main(string[] args)
     {
-        PetManager petManager = new PetManager();
-
-        if (File.ReadAllText("list-of-pets.txt").Length == 0){
+         if (File.ReadAllText("list-of-pets.txt").Length == 0){
             petManager.AddPet();
-        }else{
-            while (true){
-            Console.Write("Enter command (q to quit program): ");
-            string response = Console.ReadLine();
-            if (response == "q"){
-                break;
-            }else if(response == "p"){
-                Console.WriteLine(petManager.ReadPets());
-            }
-
-            }
         }
+        
+        // load a pet
+        PetManager petManager = new PetManager();
+        string users = File.ReadAllText("list-of-pets.txt");
+        string[] userInfo = users.Split(":");
+        Pet currentPet = new Pet();
+        currentPet.uid = userInfo[0];
+        currentPet.name = userInfo[1];
+        currentPet.healthRecord = new HealthRecord();
+        
+        
+
     }
+
+
+
 }

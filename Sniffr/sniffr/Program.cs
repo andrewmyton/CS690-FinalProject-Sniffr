@@ -4,11 +4,21 @@ class Program
 {
     static void Main(string[] args)
     {
-        Pet pet = new Pet();
-        pet.name = "Norbert";
-        Console.WriteLine(pet.name);
-        PetManager manager = new PetManager();
-        manager.AddPet();
-        Console.WriteLine(manager.listOfPets[0]);
+        PetManager petManager = new PetManager();
+
+        if (File.ReadAllText("list-of-pets.txt").Length == 0){
+            petManager.AddPet();
+        }else{
+            while (true){
+            Console.Write("Enter command (q to quit program): ");
+            string response = Console.ReadLine();
+            if (response == "q"){
+                break;
+            }else if(response == "p"){
+                Console.WriteLine(petManager.ReadPets());
+            }
+
+            }
+        }
     }
 }

@@ -15,7 +15,6 @@ public class PetManager
         Pet pet = new Pet();
         pet.name = petName;
         pet.uid = newUID;
-        listOfPets.Add(pet);
     }
 
     public string ReadPets(){

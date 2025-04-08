@@ -7,7 +7,8 @@ class Program
         Pet pet = new Pet();
         pet.name = "Norbert";
         Console.WriteLine(pet.name);
-
-        PetManager.AddPet();
+        PetManager manager = new PetManager();
+        manager.AddPet();
+        Console.WriteLine(manager.listOfPets[0]);
     }
 }

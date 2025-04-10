@@ -8,10 +8,10 @@ class Program
     static void Main(string[] args)
     {
         string[] mainMenu = {"Health", "Reminders"};
-        string[] healthOptions = {"Medication", "Vet Records", "Immunizations"};
+        string[] healthOptions = {"Medication", "Vet Records", "Vaccinations"};
         string[] medicationOptions = {"Add Medication", "View Medications"};
         string[] vetRecordOptions = {"Add a Vet Visit", "View Vet Records"};
-        string[] immunizationOptions = {"Add New Immunication ", "View Immunization Schedule"};
+        string[] vaccinationOptions = {"Add New Vaccination", "View Vaccination Schedule"};
         string[] reminderOptions = {"Add Reminder", "Reminder List"};
 
 
@@ -55,21 +55,21 @@ class Program
                 new SelectionPrompt<string>()
                 .AddChoices(medicationOptions)
                 );
-                // add medication
-                if (medicationChoice == "Add Medication"){
+                    // add medication
+                    if (medicationChoice == "Add Medication"){
                     currentPet.healthRecord.AddMedication();
                     SaveMedicationData(currentPet);
-                // view medications
-                }else if (medicationChoice == "View Medications"){
-                    if (File.ReadAllText("medications.txt").Length == 0){
-                    // message if no medications added
-                    Console.WriteLine("Add some meds!");
-                    }else{
-                        foreach (var medication in currentPet.healthRecord.medications){
-                        Console.WriteLine(medication.Key);
+                    // view medications
+                    }else if (medicationChoice == "View Medications"){
+                        if (File.ReadAllText("medications.txt").Length == 0){
+                        // message if no medications added
+                        Console.WriteLine("Add some meds!");
+                        }else{
+                            foreach (var medication in currentPet.healthRecord.medications){
+                            Console.WriteLine(medication.Key);
+                            }
+                        }                  
                     }
-                }                  
-                }
             
             // if you choose Vet Records           
             }else if (healthChoice == "Vet Records"){
@@ -94,16 +94,40 @@ class Program
                     }else{
                         foreach (DateTime record in currentPet.healthRecord.vetVisits){
                         Console.WriteLine(record.ToString());
-                    }
+                        }
                     }
                     
                 }
-            // if you choose Immunizations
-            }else if (healthChoice == "Immunizations"){
-                var immunizationChoice = AnsiConsole.Prompt(
+            // if you choose Vaccinations
+            }else if (healthChoice == "Vaccinations"){
+                // check to see if vaccination file has data to load
+                if (File.ReadAllText("vaccinations.txt").Length != 0){
+                    currentPet.healthRecord.vaccinationRecords = LoadVaccinationRecord(currentPet);
+                }
+                // prompt for vaccination options
+                var vaccinationChoices = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                .AddChoices(immunizationOptions)
+                .AddChoices(vaccinationOptions)
                 );
+                
+                // add a vaccination record
+                if (vaccinationChoices == "Add New Vaccination"){
+                    currentPet.healthRecord.EnterVaccinationRecord();
+                    SaveVaccinationRecord(currentPet);
+                
+                // view vaccination record
+                }else if (vaccinationChoices == "View Vaccination Schedule"){
+                    if (File.ReadAllText("vaccinations.txt").Length == 0){
+                    // message if no vet visits added
+                    Console.WriteLine("Add some vaccinations!");
+                    }else{
+                        foreach (var record in currentPet.healthRecord.vaccinationRecords){
+                            Console.WriteLine($"{record.Key} was last given {record.Value[record.Value.Count-1]}.");
+                        }
+                    }
+                }
+            
+            
             }
 
         }//end of health choice
@@ -151,6 +175,21 @@ class Program
         List<DateTime> vetData = JsonSerializer.Deserialize<List<DateTime>>(vetVisitsText);
         Console.WriteLine("Data Loaded\n");
         return vetData;
+    }
+
+
+    public static void SaveVaccinationRecord(Pet currentPet){
+        Dictionary<string,List<DateTime>> vaccinationData = currentPet.healthRecord.vaccinationRecords;
+        string jsonString = JsonSerializer.Serialize(vaccinationData);
+        File.AppendAllText("vaccinations.txt",jsonString);
+        Console.WriteLine("Data Saved\n"); 
+    }
+
+    public static Dictionary<string,List<DateTime>> LoadVaccinationRecord(Pet currentPet){
+        string vaccinationText = File.ReadAllText("vaccinations.txt");
+        Dictionary<string,List<DateTime>> vaccinationData = JsonSerializer.Deserialize<Dictionary<string,List<DateTime>>>(vaccinationText);
+        Console.WriteLine("Data Loaded\n");
+        return vaccinationData;
     }
 }
 

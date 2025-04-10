@@ -81,23 +81,23 @@ class Program
     
     
         
-     
+        LoadMedicationData();
         
 
     }
     
    //save medication data
    public static void SaveMedicationData(Pet currentPet){
-            var medicationData = currentPet.healthRecord.medications;
+            Dictionary<string,int> medicationData = currentPet.healthRecord.medications;
             string jsonString = JsonSerializer.Serialize(medicationData);
-            File.AppendAllText("medications.txt",currentPet.uid + ":" + jsonString + Environment.NewLine);
+            File.AppendAllText("medications.txt",jsonString);
+            Console.WriteLine("Data Saved");
         }
     
-    public static void LoadMedicationData(Pet currentPet){
+    public static void LoadMedicationData(){
         string medicationsText = File.ReadAllText("medications.txt");
-        string jsonString = JsonSerializer.Deserialize<string>(medicationsText);
-        Console.WriteLine(jsonString);
-        
+        Dictionary<string,int> medicationData = JsonSerializer.Deserialize<Dictionary<string,int>>(medicationsText);
+        Console.WriteLine("Data Loaded");   
     }
 
 }

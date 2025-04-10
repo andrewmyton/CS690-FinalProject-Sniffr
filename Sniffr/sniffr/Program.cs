@@ -13,15 +13,18 @@ class Program
         string[] vetRecordOptions = {"Add a Vet Visit", "View Vet Records"};
         string[] vaccinationOptions = {"Add New Vaccination", "View Vaccination Schedule"};
         string[] reminderOptions = {"Add Reminder", "Reminder List"};
+        string response = " ";
 
 
+         PetManager petManager = new PetManager();
 
-        //  PetManager petManager = new PetManager();
-
-        //  if (File.ReadAllText("list-of-pets.txt").Length == 0){
-        //     petManager.AddPet();
-        // }
+         if (File.ReadAllText("list-of-pets.txt").Length == 0){
+            petManager.AddPet();
+        }
         
+        
+    while(response != "q"){
+
         // load a pet
         string users = File.ReadAllText("list-of-pets.txt");
         string[] userInfo = users.Split(":");
@@ -29,8 +32,10 @@ class Program
         currentPet.uid = userInfo[0];
         currentPet.name = userInfo[1];
         currentPet.healthRecord = new HealthRecord();
+         
         
         //start main menu
+        Console.Clear();
         var mainMenuChoice = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
             .Title("\nHow would like to manage your pet: ")
@@ -139,12 +144,15 @@ class Program
             .AddChoices(reminderOptions)
         );
 
-        
+        Console.WriteLine("Feature coming soon!");
 
         }
     
-    
-        
+        // user elects to continue program
+        Console.Write("\nEnter any key to continue (type q to quit): ");
+        response = Console.ReadLine();
+        Console.Clear();
+        };
     
         
 
@@ -155,13 +163,13 @@ class Program
             Dictionary<string,int> medicationData = currentPet.healthRecord.medications;
             string jsonString = JsonSerializer.Serialize(medicationData);
             File.WriteAllText("medications.txt",jsonString);
-            Console.WriteLine("Data Saved\n");
+            Console.WriteLine("\nData Saved\n");
         }
     
     public static Dictionary<string,int> LoadMedicationData(Pet currentPet){
         string medicationsText = File.ReadAllText("medications.txt");
         Dictionary<string,int> medicationData = JsonSerializer.Deserialize<Dictionary<string,int>>(medicationsText);
-        Console.WriteLine("Data Loaded\n");   
+        // Console.WriteLine("\nData Loaded\n");   
         return medicationData;
     }
 
@@ -169,28 +177,27 @@ class Program
         List<DateTime> vetData = currentPet.healthRecord.vetVisits;
         string jsonString = JsonSerializer.Serialize(vetData);
         File.WriteAllText("vetvisits.txt",jsonString);
-        Console.WriteLine("Data Saved\n"); 
+        Console.WriteLine("\nData Saved\n"); 
     }
 
     public static List<DateTime> LoadVetData(Pet currentPet){
         string vetVisitsText = File.ReadAllText("vetvisits.txt");
         List<DateTime> vetData = JsonSerializer.Deserialize<List<DateTime>>(vetVisitsText);
-        Console.WriteLine("Data Loaded\n");
+        // Console.WriteLine("\nData Loaded\n");
         return vetData;
     }
-
 
     public static void SaveVaccinationRecord(Pet currentPet){
         Dictionary<string,List<DateTime>> vaccinationData = currentPet.healthRecord.vaccinationRecords;
         string jsonString = JsonSerializer.Serialize(vaccinationData);
         File.WriteAllText("vaccinations.txt",jsonString);
-        Console.WriteLine("Data Saved\n"); 
+        Console.WriteLine("\nData Saved\n"); 
     }
 
     public static Dictionary<string,List<DateTime>> LoadVaccinationRecord(Pet currentPet){
         string vaccinationText = File.ReadAllText("vaccinations.txt");
         Dictionary<string,List<DateTime>> vaccinationData = JsonSerializer.Deserialize<Dictionary<string,List<DateTime>>>(vaccinationText);
-        Console.WriteLine("Data Loaded\n");
+        // Console.WriteLine("\nData Loaded\n");
         return vaccinationData;
     }
 }

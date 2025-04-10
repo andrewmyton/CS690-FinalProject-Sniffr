@@ -46,10 +46,11 @@ class Program
             );
             //if you choose Medication
             if (healthChoice == "Medication"){
+                // check to see if medication file has data to load
                 if (File.ReadAllText("medications.txt").Length != 0){
                     currentPet.healthRecord.medications = LoadMedicationData(currentPet);
                 }
-                
+                // prompt for medication options
                 var medicationChoice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                 .AddChoices(medicationOptions)
@@ -60,12 +61,23 @@ class Program
                     SaveMedicationData(currentPet);
                 // view medications
                 }else if (medicationChoice == "View Medications"){
-                    foreach (var medication in currentPet.healthRecord.medications){
+                    if (File.ReadAllText("medications.txt").Length == 0){
+                    // message if no medications added
+                    Console.WriteLine("Add some meds!");
+                    }else{
+                        foreach (var medication in currentPet.healthRecord.medications){
                         Console.WriteLine(medication.Key);
                     }
+                }                  
                 }
-            // if you choose Vet Records
+            
+            // if you choose Vet Records           
             }else if (healthChoice == "Vet Records"){
+                // check to see if vetvisits file has data to load
+                if (File.ReadAllText("vetvisits.txt").Length != 0){
+                    currentPet.healthRecord.vetVisits = LoadVetData(currentPet);
+                }
+                // prompt for vet options
                 var vetRecordChoice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                 .AddChoices(vetRecordOptions)
@@ -74,6 +86,17 @@ class Program
                 if (vetRecordChoice == "Add a Vet Visit"){
                     currentPet.healthRecord.EnterVetRecord();
                     SaveVetData(currentPet);
+                //view vet visits
+                }else if (vetRecordChoice == "View Vet Records"){
+                    if (File.ReadAllText("vetvisits.txt").Length == 0){
+                    // message if no vet visits added
+                    Console.WriteLine("Add some vet visits!");
+                    }else{
+                        foreach (DateTime record in currentPet.healthRecord.vetVisits){
+                        Console.WriteLine(record.ToString());
+                    }
+                    }
+                    
                 }
             // if you choose Immunizations
             }else if (healthChoice == "Immunizations"){
@@ -83,7 +106,7 @@ class Program
                 );
             }
 
-        }//end of health choise
+        }//end of health choice
 
         //Main Menu: if you choose Reminders
         else if (mainMenuChoice == "Reminders"){

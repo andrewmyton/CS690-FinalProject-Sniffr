@@ -46,13 +46,23 @@ class Program
             );
             //if you choose Medication
             if (healthChoice == "Medication"){
+                if (File.ReadAllText("medications.txt").Length != 0){
+                    currentPet.healthRecord.medications = LoadMedicationData(currentPet);
+                }
+                
                 var medicationChoice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                 .AddChoices(medicationOptions)
                 );
+                // add medication
                 if (medicationChoice == "Add Medication"){
                     currentPet.healthRecord.AddMedication();
                     SaveMedicationData(currentPet);
+                // view medications
+                }else if (medicationChoice == "View Medications"){
+                    foreach (var medication in currentPet.healthRecord.medications){
+                        Console.WriteLine(medication.Key);
+                    }
                 }
             // if you choose Vet Records
             }else if (healthChoice == "Vet Records"){
@@ -60,8 +70,13 @@ class Program
                 new SelectionPrompt<string>()
                 .AddChoices(vetRecordOptions)
                 );
+                // add a vet visit
+                if (vetRecordChoice == "Add a Vet Visit"){
+                    currentPet.healthRecord.EnterVetRecord();
+                    SaveVetData(currentPet);
+                }
             // if you choose Immunizations
-            }else if(healthChoice == "Immunizations"){
+            }else if (healthChoice == "Immunizations"){
                 var immunizationChoice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                 .AddChoices(immunizationOptions)
@@ -81,7 +96,7 @@ class Program
     
     
         
-        LoadMedicationData();
+    
         
 
     }
@@ -91,15 +106,29 @@ class Program
             Dictionary<string,int> medicationData = currentPet.healthRecord.medications;
             string jsonString = JsonSerializer.Serialize(medicationData);
             File.AppendAllText("medications.txt",jsonString);
-            Console.WriteLine("Data Saved");
+            Console.WriteLine("Data Saved\n");
         }
     
-    public static void LoadMedicationData(){
+    public static Dictionary<string,int> LoadMedicationData(Pet currentPet){
         string medicationsText = File.ReadAllText("medications.txt");
         Dictionary<string,int> medicationData = JsonSerializer.Deserialize<Dictionary<string,int>>(medicationsText);
-        Console.WriteLine("Data Loaded");   
+        Console.WriteLine("Data Loaded\n");   
+        return medicationData;
     }
 
+    public static void SaveVetData(Pet currentPet){
+        List<DateTime> vetData = currentPet.healthRecord.vetVisits;
+        string jsonString = JsonSerializer.Serialize(vetData);
+        File.AppendAllText("vetvisits.txt",jsonString);
+        Console.WriteLine("Data Saved\n"); 
+    }
+
+    public static List<DateTime> LoadVetData(Pet currentPet){
+        string vetVisitsText = File.ReadAllText("vetvisits.txt");
+        List<DateTime> vetData = JsonSerializer.Deserialize<List<DateTime>>(vetVisitsText);
+        Console.WriteLine("Data Loaded\n");
+        return vetData;
+    }
 }
 
   

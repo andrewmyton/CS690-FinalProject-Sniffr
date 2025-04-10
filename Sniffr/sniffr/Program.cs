@@ -139,6 +139,8 @@ class Program
             .AddChoices(reminderOptions)
         );
 
+        
+
         }
     
     
@@ -152,7 +154,7 @@ class Program
    public static void SaveMedicationData(Pet currentPet){
             Dictionary<string,int> medicationData = currentPet.healthRecord.medications;
             string jsonString = JsonSerializer.Serialize(medicationData);
-            File.AppendAllText("medications.txt",jsonString);
+            File.WriteAllText("medications.txt",jsonString);
             Console.WriteLine("Data Saved\n");
         }
     
@@ -166,7 +168,7 @@ class Program
     public static void SaveVetData(Pet currentPet){
         List<DateTime> vetData = currentPet.healthRecord.vetVisits;
         string jsonString = JsonSerializer.Serialize(vetData);
-        File.AppendAllText("vetvisits.txt",jsonString);
+        File.WriteAllText("vetvisits.txt",jsonString);
         Console.WriteLine("Data Saved\n"); 
     }
 
@@ -181,7 +183,7 @@ class Program
     public static void SaveVaccinationRecord(Pet currentPet){
         Dictionary<string,List<DateTime>> vaccinationData = currentPet.healthRecord.vaccinationRecords;
         string jsonString = JsonSerializer.Serialize(vaccinationData);
-        File.AppendAllText("vaccinations.txt",jsonString);
+        File.WriteAllText("vaccinations.txt",jsonString);
         Console.WriteLine("Data Saved\n"); 
     }
 

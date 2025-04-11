@@ -29,8 +29,8 @@ class Program
         string users = File.ReadAllText("list-of-pets.txt");
         string[] userInfo = users.Split(":");
         Pet currentPet = new Pet();
-        currentPet.uid = userInfo[0];
-        currentPet.name = userInfo[1];
+        // currentPet.uid = userInfo[0];
+        // currentPet.name = userInfo[1];
         currentPet.healthRecord = new HealthRecord();
          
         

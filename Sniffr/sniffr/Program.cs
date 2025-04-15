@@ -15,6 +15,7 @@ class Program
         string[] reminderOptions = {"Reminder List","Add Reminder", "Delete Reminder"};
         string response = " ";
 
+        Console.Clear();
         // instantiate a PetManager
          PetManager petManager = new PetManager();
 
@@ -27,7 +28,7 @@ class Program
         reminders.remindersList = LoadReminders("reminders.txt");
         
     while(response != "q"){
-
+        Console.Clear();
         // load a pet
         string users = File.ReadAllText("list-of-pets.txt");
         string[] userInfo = users.Split(":");

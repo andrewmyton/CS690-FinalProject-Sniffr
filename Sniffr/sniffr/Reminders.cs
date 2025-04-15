@@ -12,7 +12,7 @@ public class Reminders
 
     }
 
-    public void RemoveReminder(string item){
+    public void DeleteReminder(string item){
         remindersList.Remove(item);
     }
 

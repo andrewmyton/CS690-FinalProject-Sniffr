@@ -151,6 +151,16 @@ class Program
             foreach(string reminder in reminders.remindersList){
                 Console.WriteLine(reminder);
             }
+        }else if (reminderChoice == "Add Reminder"){
+            reminders.AddReminder();
+            SaveReminders(reminders.remindersList);
+        }else if (reminderChoice == "Delete Reminder"){
+            var itemToDelete = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .AddChoices(reminders.remindersList)
+            );
+            reminders.DeleteReminder(itemToDelete);
+            SaveReminders(reminders.remindersList);
         }
 
         }
@@ -217,7 +227,11 @@ class Program
         return fileContentsList;
     }
 
-
+    public static void SaveReminders(List<string> reminders){
+        foreach(string reminder in reminders){
+        File.WriteAllText("reminders.txt",reminder);
+    }
+    }
 }
 
   

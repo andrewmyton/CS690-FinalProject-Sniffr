@@ -42,7 +42,7 @@ class Program
         Console.Clear();
         var mainMenuChoice = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-            .Title("\nHow would like to manage your pet: ")
+            .Title("How would like to manage your pet: ")
             .PageSize(10)
             .MoreChoicesText("[grey](Move up and down to select choice)[/]")
             .AddChoices(mainMenu));
@@ -149,22 +149,35 @@ class Program
         );
 
         if (reminderChoice == "Reminder List"){
-            foreach(string reminder in reminders.remindersList){
+            if (File.ReadAllText("reminders.txt").Length == 0){
+                // message if no reminders added
+                Console.WriteLine("Add some reminders!");
+            }else{
+                foreach(string reminder in reminders.remindersList){
                 Console.WriteLine(reminder);
+                }
             }
         }else if (reminderChoice == "Add Reminder"){
             reminders.AddReminder();
+            Console.WriteLine("Reminder Added!");
             SaveReminders(reminders.remindersList);
         }else if (reminderChoice == "Delete Reminder"){
-            var itemToDelete = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-            .AddChoices(reminders.remindersList)
-            );
-            reminders.DeleteReminder(itemToDelete);
-            SaveReminders(reminders.remindersList);
-        }
+            if (File.ReadAllText("reminders.txt").Length == 0){
+                // message if no reminders added
+                Console.WriteLine("Add some reminders to delete!");
+            }else{
+                var itemToDelete = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .Title("Scroll to select a reminder to delete: ")
+                .AddChoices(reminders.remindersList)
+                );
+                reminders.DeleteReminder(itemToDelete);
+                Console.WriteLine("Deleted!");
+                SaveReminders(reminders.remindersList);
+                }   
+            }
 
-        }
+        } // end of reminder choice
     
         // user elects to continue program
         Console.Write("\nEnter any key to continue (type q to quit): ");
@@ -176,7 +189,7 @@ class Program
 
     }
     
-   //save medication data
+   // functions to load and save data
    public static void SaveMedicationData(Pet currentPet){
             Dictionary<string,int> medicationData = currentPet.healthRecord.medications;
             string jsonString = JsonSerializer.Serialize(medicationData);
@@ -233,6 +246,8 @@ class Program
         File.WriteAllText("reminders.txt",reminder);
     }
     }
+
+
 }
 
   

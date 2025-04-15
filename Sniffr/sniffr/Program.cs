@@ -12,19 +12,23 @@ class Program
         string[] medicationOptions = {"Add Medication", "View Medications"};
         string[] vetRecordOptions = {"Add a Vet Visit", "View Vet Records"};
         string[] vaccinationOptions = {"Add New Vaccination", "View Vaccination Schedule"};
-        string[] reminderOptions = {"Add Reminder", "Reminder List"};
+        string[] reminderOptions = {"Reminder List","Add Reminder", "Delete Reminder"};
         string response = " ";
 
-
+        Console.Clear();
+        // instantiate a PetManager
          PetManager petManager = new PetManager();
 
          if (File.ReadAllText("list-of-pets.txt").Length == 0){
             petManager.AddPet();
         }
         
+        // instantiate Reminders 
+        Reminders reminders = new Reminders();
+        reminders.remindersList = LoadReminders("reminders.txt");
         
     while(response != "q"){
-
+        Console.Clear();
         // load a pet
         string users = File.ReadAllText("list-of-pets.txt");
         string[] userInfo = users.Split(":");
@@ -38,7 +42,7 @@ class Program
         Console.Clear();
         var mainMenuChoice = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-            .Title("\nHow would like to manage your pet: ")
+            .Title("How would like to manage your pet: ")
             .PageSize(10)
             .MoreChoicesText("[grey](Move up and down to select choice)[/]")
             .AddChoices(mainMenu));
@@ -144,9 +148,36 @@ class Program
             .AddChoices(reminderOptions)
         );
 
-        Console.WriteLine("Feature coming soon!");
+        if (reminderChoice == "Reminder List"){
+            if (File.ReadAllText("reminders.txt").Length == 0){
+                // message if no reminders added
+                Console.WriteLine("Add some reminders!");
+            }else{
+                foreach(string reminder in reminders.remindersList){
+                Console.WriteLine(reminder);
+                }
+            }
+        }else if (reminderChoice == "Add Reminder"){
+            reminders.AddReminder();
+            Console.WriteLine("Reminder Added!");
+            SaveReminders(reminders.remindersList);
+        }else if (reminderChoice == "Delete Reminder"){
+            if (File.ReadAllText("reminders.txt").Length == 0){
+                // message if no reminders added
+                Console.WriteLine("Add some reminders to delete!");
+            }else{
+                var itemToDelete = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .Title("Scroll to select a reminder to delete: ")
+                .AddChoices(reminders.remindersList)
+                );
+                reminders.DeleteReminder(itemToDelete);
+                Console.WriteLine("Deleted!");
+                SaveReminders(reminders.remindersList);
+                }   
+            }
 
-        }
+        } // end of reminder choice
     
         // user elects to continue program
         Console.Write("\nEnter any key to continue (type q to quit): ");
@@ -158,7 +189,7 @@ class Program
 
     }
     
-   //save medication data
+   // functions to load and save data
    public static void SaveMedicationData(Pet currentPet){
             Dictionary<string,int> medicationData = currentPet.healthRecord.medications;
             string jsonString = JsonSerializer.Serialize(medicationData);
@@ -200,6 +231,23 @@ class Program
         // Console.WriteLine("\nData Loaded\n");
         return vaccinationData;
     }
+
+    public static List<string> LoadReminders(string file){
+        List<string> fileContentsList = new List<string>();
+        string fileContents = File.ReadAllText(file);
+        foreach(string line in fileContents.Split('\n')){
+            fileContentsList.Add(line);
+        }
+        return fileContentsList;
+    }
+
+    public static void SaveReminders(List<string> reminders){
+        foreach(string reminder in reminders){
+        File.WriteAllText("reminders.txt",reminder);
+    }
+    }
+
+
 }
 
   

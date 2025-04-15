@@ -2,20 +2,18 @@
 
 public class Reminders
 {
-    public static List<string> reminders = new List<string>();
+    public List<string> remindersList = new List<string>();
     
 
-    public static void AddReminder(){
+    public void AddReminder(){
         Console.Write("Add Reminder: ");
         string item = Console.ReadLine();
-        reminders.Add(item);
+        remindersList.Add(item);
 
     }
 
-    public static void RemoveReminder(){
-        Console.Write("Delete Reminder: ");
-        string item = Console.ReadLine();
-        reminders.Remove(item);
+    public void DeleteReminder(string item){
+        remindersList.Remove(item);
     }
 
 

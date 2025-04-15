@@ -12,16 +12,19 @@ class Program
         string[] medicationOptions = {"Add Medication", "View Medications"};
         string[] vetRecordOptions = {"Add a Vet Visit", "View Vet Records"};
         string[] vaccinationOptions = {"Add New Vaccination", "View Vaccination Schedule"};
-        string[] reminderOptions = {"Add Reminder", "Reminder List"};
+        string[] reminderOptions = {"Reminder List","Add Reminder", "Delete Reminder"};
         string response = " ";
 
-
+        // instantiate a PetManager
          PetManager petManager = new PetManager();
 
          if (File.ReadAllText("list-of-pets.txt").Length == 0){
             petManager.AddPet();
         }
         
+        // instantiate Reminders 
+        Reminders reminders = new Reminders();
+        reminders.remindersList = LoadReminders("reminders.txt");
         
     while(response != "q"){
 
@@ -144,7 +147,11 @@ class Program
             .AddChoices(reminderOptions)
         );
 
-        Console.WriteLine("Feature coming soon!");
+        if (reminderChoice == "Reminder List"){
+            foreach(string reminder in reminders.remindersList){
+                Console.WriteLine(reminder);
+            }
+        }
 
         }
     
@@ -200,6 +207,17 @@ class Program
         // Console.WriteLine("\nData Loaded\n");
         return vaccinationData;
     }
+
+    public static List<string> LoadReminders(string file){
+        List<string> fileContentsList = new List<string>();
+        string fileContents = File.ReadAllText(file);
+        foreach(string line in fileContents.Split('\n')){
+            fileContentsList.Add(line);
+        }
+        return fileContentsList;
+    }
+
+
 }
 
   

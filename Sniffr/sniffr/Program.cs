@@ -9,7 +9,7 @@ class Program
     {
         string[] mainMenu = {"Health", "Reminders"};
         string[] healthOptions = {"Medication", "Vet Records", "Vaccinations"};
-        string[] medicationOptions = {"Add Medication", "View Medications"};
+        string[] medicationOptions = {"Add Medication", "View Medications", "View Medications Due"};
         string[] vetRecordOptions = {"Add a Vet Visit", "View Vet Records"};
         string[] vaccinationOptions = {"Add New Vaccination", "View Vaccination Schedule"};
         string[] reminderOptions = {"Reminder List","Add Reminder", "Delete Reminder"};
@@ -77,6 +77,7 @@ class Program
                         }else{
                             foreach (var medication in currentPet.healthRecord.medications){
                             Console.WriteLine($"{medication.Key} is given every {medication.Value} day(s).");
+                            
                             }
                         }                  
                     }
@@ -104,7 +105,7 @@ class Program
                     }else{
                         Console.WriteLine("Here is a list of your past vet visits: \n");
                         foreach (DateTime record in currentPet.healthRecord.vetVisits){
-                        Console.WriteLine(record.ToString());
+                        Console.WriteLine(record.ToString("MM/dd/yyyy"));
                         }
                     }
                     
@@ -133,7 +134,7 @@ class Program
                     Console.WriteLine("Add some vaccinations!");
                     }else{
                         foreach (var record in currentPet.healthRecord.vaccinationRecords){
-                            Console.WriteLine($"{record.Key} was last given {record.Value[record.Value.Count-1]}.");
+                            Console.WriteLine($"{record.Key} vaccine was last given {record.Value[record.Value.Count-1].ToString("MM/dd/yyyy")}.");
                         }
                     }
                 }

@@ -1,4 +1,5 @@
 ﻿namespace sniffr;
+using Spectre.Console;
 
 public class HealthRecord
 {
@@ -53,5 +54,30 @@ public class HealthRecord
             vaccinationRecords[vaccination].Add(vaccinationDate);
         }
     }
+
+    public void GiveMedication(Dictionary<string,int> medications){
+        List<string> medicationList= new List<string>();
+        foreach (string medication in medications.Keys){
+            medicationList.Add(medication);
+        }
+
+        var medicationChoice = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select medication to give: ")
+            .PageSize(10)
+            .MoreChoicesText("[grey](Move up and down to select choice)[/]")
+            .AddChoices(medicationList));
+            medicationAdministered[medicationChoice].Add(DateTime.Today);
+    }
+
+    public void ViewMedicationDue(Dictionary<string,int> medications,Dictionary<string, List<DateTime>> medicationAdministered){
+        foreach (var medication in medications){     
+                Console.WriteLine($"{medication.Key} is due ");   
+            }
+        // {medicationAdministered[medication.Key].Value[medicationAdministered[medication.Key].Value.Count-1].Add(medication.Value).ToString("MM/dd/yyyy")}
+
+        }
+    
+
 
 }

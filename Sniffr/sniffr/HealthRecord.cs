@@ -4,7 +4,7 @@ using Spectre.Console;
 public class HealthRecord
 {
     public Dictionary<string,int> medications = new Dictionary<string,int>();
-    public Dictionary<string, List<DateTime>> medicationAdministered = new Dictionary<string, List<DateTime>>();
+    public Dictionary<string, DateTime> medicationAdministered = new Dictionary<string, DateTime>();
     public List<DateTime> vetVisits = new List<DateTime>();
     public Dictionary<string,List<DateTime>> vaccinationRecords = new Dictionary<string, List<DateTime>>();
 
@@ -21,14 +21,10 @@ public class HealthRecord
 
         Console.Write("Enter last administration date (MM/DD/YYYY): ");
         DateTime dateAdministered = DateTime.Parse(Console.ReadLine());
+        medicationAdministered[medication] = dateAdministered;
 
-        if(!medicationAdministered.ContainsKey(medication)){
-            List<DateTime> dates = new List<DateTime>();
-            dates.Add(dateAdministered);
-            medicationAdministered.Add(medication,dates);
-        }else{
-            medicationAdministered[medication].Add(dateAdministered);
-        }
+            
+        
     
     
     }
@@ -67,13 +63,14 @@ public class HealthRecord
             .PageSize(10)
             .MoreChoicesText("[grey](Move up and down to select choice)[/]")
             .AddChoices(medicationList));
-            medicationAdministered[medicationChoice].Add(DateTime.Today);
+            medicationAdministered[medicationChoice]= DateTime.Today;
     }
 
-    public void ViewMedicationDue(Dictionary<string,int> medications,Dictionary<string, List<DateTime>> medicationAdministered){
-        foreach (var medication in medications){     
-                Console.WriteLine($"{medication.Key} is due ");   
-            }
+    public void ViewMedicationDue(Dictionary<string,int> medications,Dictionary<string, DateTime> medicationAdministered){
+        foreach(var medication in medications){ 
+            System.TimeSpan duration = new System.TimeSpan(medication.Value,0,0,0);
+            Console.WriteLine($"{medication.Key} is due {medicationAdministered[medication.Key].Add(duration).ToString("MM/dd/yyyy")}");
+        }       
         // {medicationAdministered[medication.Key].Value[medicationAdministered[medication.Key].Value.Count-1].Add(medication.Value).ToString("MM/dd/yyyy")}
 
         }

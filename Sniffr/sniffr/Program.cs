@@ -9,7 +9,7 @@ class Program
     {
         string[] mainMenu = {"Health", "Reminders"};
         string[] healthOptions = {"Medication", "Vet Records", "Vaccinations"};
-        string[] medicationOptions = {"Add Medication", "View Medications", "View Medications Due"};
+        string[] medicationOptions = {"Add Medication", "View Medications", "Give Medication", "View Medications Due"};
         string[] vetRecordOptions = {"Add a Vet Visit", "View Vet Records"};
         string[] vaccinationOptions = {"Add New Vaccination", "View Vaccination Schedule"};
         string[] reminderOptions = {"Reminder List","Add Reminder", "Delete Reminder"};
@@ -59,6 +59,7 @@ class Program
                 // check to see if medication file has data to load
                 if (File.ReadAllText("medications.txt").Length != 0){
                     currentPet.healthRecord.medications = LoadMedicationData(currentPet);
+                    currentPet.healthRecord.medicationAdministered = LoadMedsGivenData(currentPet);
                 }
                 // prompt for medication options
                 var medicationChoice = AnsiConsole.Prompt(
@@ -69,6 +70,7 @@ class Program
                     if (medicationChoice == "Add Medication"){
                     currentPet.healthRecord.AddMedication();
                     SaveMedicationData(currentPet);
+                    SaveMedsGivenData(currentPet);
                     // view medications
                     }else if (medicationChoice == "View Medications"){
                         if (File.ReadAllText("medications.txt").Length == 0){
@@ -76,10 +78,16 @@ class Program
                         Console.WriteLine("Add some meds!");
                         }else{
                             foreach (var medication in currentPet.healthRecord.medications){
-                            Console.WriteLine($"{medication.Key} is given every {medication.Value} day(s).");
-                            
+                            Console.WriteLine($"{medication.Key} is given every {medication.Value} day(s)."); 
                             }
-                        }                  
+                        }
+                        // give pet medication                  
+                    }else if (medicationChoice == "Give Medication"){
+                        currentPet.healthRecord.GiveMedication(currentPet.healthRecord.medications);
+                        SaveMedsGivenData(currentPet);
+                        // view list of when medication are due 
+                    }else if (medicationChoice == "View Medications Due"){
+                        currentPet.healthRecord.ViewMedicationDue(currentPet.healthRecord.medications,currentPet.healthRecord.medicationAdministered);
                     }
             
             // if you choose Vet Records           
@@ -190,7 +198,7 @@ class Program
     
         
 
-    }
+    } // end of main program
     
    // functions to load and save data
    public static void SaveMedicationData(Pet currentPet){
@@ -205,6 +213,20 @@ class Program
         Dictionary<string,int> medicationData = JsonSerializer.Deserialize<Dictionary<string,int>>(medicationsText);
         // Console.WriteLine("\nData Loaded\n");   
         return medicationData;
+    }
+
+    public static void SaveMedsGivenData(Pet currentPet){
+        Dictionary<string,DateTime> medsGivenData = currentPet.healthRecord.medicationAdministered;
+        string jsonString = JsonSerializer.Serialize(medsGivenData);
+        File.WriteAllText("medsgiven.txt",jsonString);
+        Console.WriteLine("\nData Saved\n");
+
+    }
+
+    public static Dictionary<string,DateTime> LoadMedsGivenData(Pet currentPet){
+        string medsGivenText = File.ReadAllText("medsgiven.txt");
+        Dictionary<string,DateTime> medsGivenData = JsonSerializer.Deserialize<Dictionary<string, DateTime>>(medsGivenText);
+        return medsGivenData;
     }
 
     public static void SaveVetData(Pet currentPet){

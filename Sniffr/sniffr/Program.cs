@@ -16,6 +16,7 @@ class Program
         string response = " ";
 
         Console.Clear();
+        
         // instantiate a PetManager
          PetManager petManager = new PetManager();
 
@@ -33,8 +34,8 @@ class Program
         string users = File.ReadAllText("list-of-pets.txt");
         string[] userInfo = users.Split(":");
         Pet currentPet = new Pet();
-        // currentPet.uid = userInfo[0];
-        // currentPet.name = userInfo[1];
+        currentPet.uid = userInfo[0];
+        currentPet.name = userInfo[1];
         currentPet.healthRecord = new HealthRecord();
          
         
@@ -42,7 +43,7 @@ class Program
         Console.Clear();
         var mainMenuChoice = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-            .Title("How would like to manage your pet: ")
+            .Title($"How would like to manage {currentPet.name}")
             .PageSize(10)
             .MoreChoicesText("[grey](Move up and down to select choice)[/]")
             .AddChoices(mainMenu));
@@ -75,7 +76,7 @@ class Program
                         Console.WriteLine("Add some meds!");
                         }else{
                             foreach (var medication in currentPet.healthRecord.medications){
-                            Console.WriteLine(medication.Key);
+                            Console.WriteLine($"{medication.Key} is given every {medication.Value} day(s).");
                             }
                         }                  
                     }
@@ -101,6 +102,7 @@ class Program
                     // message if no vet visits added
                     Console.WriteLine("Add some vet visits!");
                     }else{
+                        Console.WriteLine("Here is a list of your past vet visits: \n");
                         foreach (DateTime record in currentPet.healthRecord.vetVisits){
                         Console.WriteLine(record.ToString());
                         }

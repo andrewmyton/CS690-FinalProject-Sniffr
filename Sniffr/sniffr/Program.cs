@@ -9,7 +9,7 @@ class Program
     {
         string[] mainMenu = {"Health", "Reminders"};
         string[] healthOptions = {"Medication", "Vet Records", "Vaccinations"};
-        string[] medicationOptions = {"Add Medication", "View Medications", "View Medications Due"};
+        string[] medicationOptions = {"Add Medication", "View Medications", "Give Medication", "View Medications Due"};
         string[] vetRecordOptions = {"Add a Vet Visit", "View Vet Records"};
         string[] vaccinationOptions = {"Add New Vaccination", "View Vaccination Schedule"};
         string[] reminderOptions = {"Reminder List","Add Reminder", "Delete Reminder"};
@@ -78,10 +78,14 @@ class Program
                         Console.WriteLine("Add some meds!");
                         }else{
                             foreach (var medication in currentPet.healthRecord.medications){
-                            Console.WriteLine($"{medication.Key} is given every {medication.Value} day(s).");
-                            
+                            Console.WriteLine($"{medication.Key} is given every {medication.Value} day(s)."); 
                             }
-                        }                  
+                        }
+                        // give pet medication                  
+                    }else if (medicationChoice == "Give Medication"){
+                        currentPet.healthRecord.GiveMedication(currentPet.healthRecord.medications);
+                        SaveMedsGivenData(currentPet);
+                        // view list of when medication are due 
                     }else if (medicationChoice == "View Medications Due"){
                         currentPet.healthRecord.ViewMedicationDue(currentPet.healthRecord.medications,currentPet.healthRecord.medicationAdministered);
                     }
@@ -194,7 +198,7 @@ class Program
     
         
 
-    }
+    } // end of main program
     
    // functions to load and save data
    public static void SaveMedicationData(Pet currentPet){
@@ -224,6 +228,7 @@ class Program
         Dictionary<string,DateTime> medsGivenData = JsonSerializer.Deserialize<Dictionary<string, DateTime>>(medsGivenText);
         return medsGivenData;
     }
+
     public static void SaveVetData(Pet currentPet){
         List<DateTime> vetData = currentPet.healthRecord.vetVisits;
         string jsonString = JsonSerializer.Serialize(vetData);

@@ -59,6 +59,7 @@ class Program
                 // check to see if medication file has data to load
                 if (File.ReadAllText("medications.txt").Length != 0){
                     currentPet.healthRecord.medications = LoadMedicationData(currentPet);
+                    currentPet.healthRecord.medicationAdministered = LoadMedsGivenData(currentPet);
                 }
                 // prompt for medication options
                 var medicationChoice = AnsiConsole.Prompt(
@@ -69,6 +70,7 @@ class Program
                     if (medicationChoice == "Add Medication"){
                     currentPet.healthRecord.AddMedication();
                     SaveMedicationData(currentPet);
+                    SaveMedsGivenData(currentPet);
                     // view medications
                     }else if (medicationChoice == "View Medications"){
                         if (File.ReadAllText("medications.txt").Length == 0){
@@ -80,6 +82,8 @@ class Program
                             
                             }
                         }                  
+                    }else if (medicationChoice == "View Medications Due"){
+                        currentPet.healthRecord.ViewMedicationDue(currentPet.healthRecord.medications,currentPet.healthRecord.medicationAdministered);
                     }
             
             // if you choose Vet Records           
@@ -207,6 +211,19 @@ class Program
         return medicationData;
     }
 
+    public static void SaveMedsGivenData(Pet currentPet){
+        Dictionary<string,DateTime> medsGivenData = currentPet.healthRecord.medicationAdministered;
+        string jsonString = JsonSerializer.Serialize(medsGivenData);
+        File.WriteAllText("medsgiven.txt",jsonString);
+        Console.WriteLine("\nData Saved\n");
+
+    }
+
+    public static Dictionary<string,DateTime> LoadMedsGivenData(Pet currentPet){
+        string medsGivenText = File.ReadAllText("medsgiven.txt");
+        Dictionary<string,DateTime> medsGivenData = JsonSerializer.Deserialize<Dictionary<string, DateTime>>(medsGivenText);
+        return medsGivenData;
+    }
     public static void SaveVetData(Pet currentPet){
         List<DateTime> vetData = currentPet.healthRecord.vetVisits;
         string jsonString = JsonSerializer.Serialize(vetData);

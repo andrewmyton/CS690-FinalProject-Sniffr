@@ -66,9 +66,8 @@ public class HealthRecord
             System.TimeSpan duration = new System.TimeSpan(medication.Value,0,0,0);
             Console.WriteLine($"{medication.Key} is due {medicationAdministered[medication.Key].Add(duration).ToString("MM/dd/yyyy")}");
         }       
-        // {medicationAdministered[medication.Key].Value[medicationAdministered[medication.Key].Value.Count-1].Add(medication.Value).ToString("MM/dd/yyyy")}
 
-        }
+    }
     
 
 }

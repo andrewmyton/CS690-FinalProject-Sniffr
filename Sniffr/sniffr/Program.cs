@@ -41,10 +41,9 @@ class Program
         
         //start main menu
         Console.Clear();
+        Console.WriteLine($"How would like to manage {currentPet.name}");
         var mainMenuChoice = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-            .Title($"How would like to manage {currentPet.name}")
-            .PageSize(10)
             .MoreChoicesText("[grey](Move up and down to select choice)[/]")
             .AddChoices(mainMenu));
         

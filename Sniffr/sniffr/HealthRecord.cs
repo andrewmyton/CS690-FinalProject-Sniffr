@@ -59,6 +59,8 @@ public class HealthRecord
             .MoreChoicesText("[grey](Move up and down to select choice)[/]")
             .AddChoices(medicationList));
             medicationAdministered[medicationChoice]= DateTime.Today;
+    
+            Console.WriteLine($"You gave a dose of {medicationChoice}.");
     }
 
     public void ViewMedicationDue(Dictionary<string,int> medications,Dictionary<string, DateTime> medicationAdministered){

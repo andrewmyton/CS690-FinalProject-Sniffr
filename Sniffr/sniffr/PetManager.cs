@@ -26,7 +26,5 @@ public class PetManager
         return userList;
     }
 
-    // public Pet SetCurrentPet(){
-
-    // }
+  
 }

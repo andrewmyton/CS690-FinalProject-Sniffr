@@ -22,11 +22,6 @@ public class HealthRecord
         Console.Write("Enter last administration date (MM/DD/YYYY): ");
         DateTime dateAdministered = DateTime.Parse(Console.ReadLine());
         medicationAdministered[medication] = dateAdministered;
-
-            
-        
-    
-    
     }
     
     public void EnterVetRecord(){
@@ -75,6 +70,5 @@ public class HealthRecord
 
         }
     
-
 
 }

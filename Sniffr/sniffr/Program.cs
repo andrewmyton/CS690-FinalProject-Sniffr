@@ -205,7 +205,7 @@ class Program
             Dictionary<string,int> medicationData = currentPet.healthRecord.medications;
             string jsonString = JsonSerializer.Serialize(medicationData);
             File.WriteAllText("medications.txt",jsonString);
-            Console.WriteLine("\nData Saved\n");
+            // Console.WriteLine("\nData Saved\n");
         }
     
     public static Dictionary<string,int> LoadMedicationData(Pet currentPet){
@@ -219,7 +219,7 @@ class Program
         Dictionary<string,DateTime> medsGivenData = currentPet.healthRecord.medicationAdministered;
         string jsonString = JsonSerializer.Serialize(medsGivenData);
         File.WriteAllText("medsgiven.txt",jsonString);
-        Console.WriteLine("\nData Saved\n");
+        // Console.WriteLine("\nData Saved\n");
 
     }
 
@@ -233,7 +233,7 @@ class Program
         List<DateTime> vetData = currentPet.healthRecord.vetVisits;
         string jsonString = JsonSerializer.Serialize(vetData);
         File.WriteAllText("vetvisits.txt",jsonString);
-        Console.WriteLine("\nData Saved\n"); 
+        // Console.WriteLine("\nData Saved\n"); 
     }
 
     public static List<DateTime> LoadVetData(Pet currentPet){
@@ -247,7 +247,7 @@ class Program
         Dictionary<string,List<DateTime>> vaccinationData = currentPet.healthRecord.vaccinationRecords;
         string jsonString = JsonSerializer.Serialize(vaccinationData);
         File.WriteAllText("vaccinations.txt",jsonString);
-        Console.WriteLine("\nData Saved\n"); 
+        // Console.WriteLine("\nData Saved\n"); 
     }
 
     public static Dictionary<string,List<DateTime>> LoadVaccinationRecord(Pet currentPet){

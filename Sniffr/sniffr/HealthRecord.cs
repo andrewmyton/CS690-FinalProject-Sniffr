@@ -64,10 +64,14 @@ public class HealthRecord
     }
 
     public void ViewMedicationDue(Dictionary<string,int> medications,Dictionary<string, DateTime> medicationAdministered){
+        if (medications.Count() == 0){
+            Console.WriteLine("Add some medications!");
+        }else{
         foreach(var medication in medications){ 
             System.TimeSpan duration = new System.TimeSpan(medication.Value,0,0,0);
             Console.WriteLine($"{medication.Key} is due {medicationAdministered[medication.Key].Add(duration).ToString("MM/dd/yyyy")}");
-        }       
+        } 
+        }      
 
     }
     

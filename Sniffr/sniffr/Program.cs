@@ -28,8 +28,7 @@ class Program
         }
         
         // instantiate Reminders 
-        Reminders reminders = new Reminders();
-        reminders.remindersList = LoadReminders("reminders.txt");
+        Reminders currentPetReminders = new Reminders();
         
     while(response != "q"){
         Console.Clear();
@@ -141,6 +140,9 @@ class Program
 
         //Main Menu: if you choose Reminders
         else if (mainMenuChoice == "Reminders"){
+            if(File.ReadAllText("reminders.txt").Length !=0){
+                currentPetReminders.remindersList = LoadReminders("reminders.txt");
+            }
             var reminderChoice = consoleUI.DisplayMenu(reminderOptions);
 
         if (reminderChoice == "Reminder List"){
@@ -148,14 +150,14 @@ class Program
                 // message if no reminders added
                 Console.WriteLine("Add some reminders!");
             }else{
-                foreach(string reminder in reminders.remindersList){
+                foreach(string reminder in currentPetReminders.remindersList){
                 Console.WriteLine(reminder);
                 }
             }
         }else if (reminderChoice == "Add Reminder"){
-            reminders.AddReminder();
+            currentPetReminders.AddReminder();
             Console.WriteLine("Reminder Added!");
-            SaveReminders(reminders.remindersList);
+            SaveReminders(currentPetReminders.remindersList);
         }else if (reminderChoice == "Delete Reminder"){
             if (File.ReadAllText("reminders.txt").Length == 0){
                 // message if no reminders added
@@ -164,11 +166,11 @@ class Program
                 var itemToDelete = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                 .Title("Scroll to select a reminder to delete: ")
-                .AddChoices(reminders.remindersList)
+                .AddChoices(currentPetReminders.remindersList)
                 );
-                reminders.DeleteReminder(itemToDelete);
+                currentPetReminders.DeleteReminder(itemToDelete);
                 Console.WriteLine("Deleted!");
-                SaveReminders(reminders.remindersList);
+                SaveReminders(currentPetReminders.remindersList);
                 }   
             }
 
@@ -243,17 +245,15 @@ class Program
 
     public static List<string> LoadReminders(string file){
         List<string> fileContentsList = new List<string>();
-        string fileContents = File.ReadAllText(file);
-        foreach(string line in fileContents.Split('\n')){
-            fileContentsList.Add(line);
+        string[] fileContents = File.ReadAllLines(file);
+        foreach(string item in fileContents){
+            fileContentsList.Add(item);
         }
         return fileContentsList;
     }
 
     public static void SaveReminders(List<string> reminders){
-        foreach(string reminder in reminders){
-        File.WriteAllText("reminders.txt",reminder);
-    }
+        File.WriteAllLines("reminders.txt",reminders);
     }
 
 

@@ -16,10 +16,13 @@ class Program
         string response = " ";
 
         Console.Clear();
-        
-        // instantiate a PetManager
-         PetManager petManager = new PetManager();
 
+
+        // instantiate the UI control
+        UIControl consoleUI = new UIControl();
+        
+        // instantiate the PetManager
+         PetManager petManager = new PetManager();
          if (File.ReadAllText("list-of-pets.txt").Length == 0){
             petManager.AddPet();
         }
@@ -42,17 +45,11 @@ class Program
         //start main menu
         Console.Clear();
         Console.WriteLine($"How would like to manage {currentPet.name}");
-        var mainMenuChoice = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-            .MoreChoicesText("[grey](Move up and down to select choice)[/]")
-            .AddChoices(mainMenu));
+        var mainMenuChoice = consoleUI.DisplayMenu(mainMenu);
         
         // Main Menu: if you choose Health
         if (mainMenuChoice == "Health"){
-            var healthChoice = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-            .AddChoices(healthOptions)
-            );
+            var healthChoice = consoleUI.DisplayMenu(healthOptions);
             //if you choose Medication
             if (healthChoice == "Medication"){
                 // check to see if medication file has data to load
@@ -61,10 +58,7 @@ class Program
                     currentPet.healthRecord.medicationAdministered = LoadMedsGivenData(currentPet);
                 }
                 // prompt for medication options
-                var medicationChoice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                .AddChoices(medicationOptions)
-                );
+                var medicationChoice = consoleUI.DisplayMenu(medicationOptions);
                     // add medication
                     if (medicationChoice == "Add Medication"){
                     currentPet.healthRecord.AddMedication();
@@ -96,10 +90,7 @@ class Program
                     currentPet.healthRecord.vetVisits = LoadVetData(currentPet);
                 }
                 // prompt for vet options
-                var vetRecordChoice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                .AddChoices(vetRecordOptions)
-                );
+                var vetRecordChoice = consoleUI.DisplayMenu(vetRecordOptions);
                 // add a vet visit
                 if (vetRecordChoice == "Add a Vet Visit"){
                     currentPet.healthRecord.EnterVetRecord();
@@ -124,10 +115,7 @@ class Program
                     currentPet.healthRecord.vaccinationRecords = LoadVaccinationRecord(currentPet);
                 }
                 // prompt for vaccination options
-                var vaccinationChoices = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                .AddChoices(vaccinationOptions)
-                );
+                var vaccinationChoices = consoleUI.DisplayMenu(vaccinationOptions);
                 
                 // add a vaccination record
                 if (vaccinationChoices == "Add New Vaccination"){
@@ -153,10 +141,7 @@ class Program
 
         //Main Menu: if you choose Reminders
         else if (mainMenuChoice == "Reminders"){
-            var reminderChoice = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-            .AddChoices(reminderOptions)
-        );
+            var reminderChoice = consoleUI.DisplayMenu(reminderOptions);
 
         if (reminderChoice == "Reminder List"){
             if (File.ReadAllText("reminders.txt").Length == 0){

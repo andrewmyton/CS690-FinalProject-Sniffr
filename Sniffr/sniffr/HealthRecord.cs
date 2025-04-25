@@ -23,6 +23,19 @@ public class HealthRecord
         DateTime dateAdministered = DateTime.Parse(Console.ReadLine());
         medicationAdministered[medication] = dateAdministered;
     }
+
+    public void RemoveMedication(){
+        List<string> medicationList = medications.Keys.ToList();
+        var medicationToRemove = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select medication to give: ")
+            .PageSize(10)
+            .MoreChoicesText("[grey](Move up and down to select choice)[/]")
+            .AddChoices(medicationList));
+
+        medications.Remove(medicationToRemove);
+        medicationAdministered.Remove(medicationToRemove);
+    }
     
     public void EnterVetRecord(){
         Console.Write("Enter vet visit (MM/DD/YYYY): ");

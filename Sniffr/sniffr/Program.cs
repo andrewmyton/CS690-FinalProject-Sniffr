@@ -7,9 +7,10 @@ class Program
   
     static void Main(string[] args)
     {
+        // menu options
         string[] mainMenu = {"Health", "Reminders"};
         string[] healthOptions = {"Medication", "Vet Records", "Vaccinations"};
-        string[] medicationOptions = {"Add Medication", "View Medications", "Give Medication", "View Medications Due"};
+        string[] medicationOptions = {"Add Medication", "View Medications", "Remove Medication","Give Medication", "View Medications Due"};
         string[] vetRecordOptions = {"Add a Vet Visit", "View Vet Records"};
         string[] vaccinationOptions = {"Add New Vaccination", "View Vaccination Schedule"};
         string[] reminderOptions = {"Reminder List","Add Reminder", "Delete Reminder"};
@@ -73,10 +74,26 @@ class Program
                             Console.WriteLine($"{medication.Key} is given every {medication.Value} day(s)."); 
                             }
                         }
-                        // give pet medication                  
+                    
+                    // remove medication                    
+                    }else if(medicationChoice == "Remove Medication"){
+                        if (File.ReadAllText("medications.txt").Length == 0){
+                        // message if no medications added
+                        Console.WriteLine("Add some meds to remove!");
+                        }else{
+                            currentPet.healthRecord.RemoveMedication();
+                        }
+                        SaveMedicationData(currentPet);
+                        SaveMedsGivenData(currentPet);
+                    // give pet medication 
                     }else if (medicationChoice == "Give Medication"){
+                        if (File.ReadAllText("medications.txt").Length == 0){
+                        // message if no medications added
+                        Console.WriteLine("Add some meds to give!");
+                        }else{
                         currentPet.healthRecord.GiveMedication(currentPet.healthRecord.medications);
                         SaveMedsGivenData(currentPet);
+                        }
                         // view list of when medication are due 
                     }else if (medicationChoice == "View Medications Due"){
                         currentPet.healthRecord.ViewMedicationDue(currentPet.healthRecord.medications,currentPet.healthRecord.medicationAdministered);
@@ -190,8 +207,12 @@ class Program
    public static void SaveMedicationData(Pet currentPet){
             Dictionary<string,int> medicationData = currentPet.healthRecord.medications;
             string jsonString = JsonSerializer.Serialize(medicationData);
+            if(medicationData.Count == 0){
+                File.WriteAllText("medications.txt","");
+            }else{
             File.WriteAllText("medications.txt",jsonString);
             // Console.WriteLine("\nData Saved\n");
+                }
         }
     
     public static Dictionary<string,int> LoadMedicationData(Pet currentPet){
@@ -204,8 +225,12 @@ class Program
     public static void SaveMedsGivenData(Pet currentPet){
         Dictionary<string,DateTime> medsGivenData = currentPet.healthRecord.medicationAdministered;
         string jsonString = JsonSerializer.Serialize(medsGivenData);
-        File.WriteAllText("medsgiven.txt",jsonString);
-        // Console.WriteLine("\nData Saved\n");
+         if(medsGivenData.Count == 0){
+            File.WriteAllText("medsgiven.txt","");
+        }else{
+            File.WriteAllText("medsgiven.txt",jsonString);
+            // Console.WriteLine("\nData Saved\n");
+            }
 
     }
 

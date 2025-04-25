@@ -14,14 +14,21 @@ public class HealthRecord
         Console.Write("Enter medication to add: ");
         string medication = Console.ReadLine();
         
+        try
+        {
         Console.Write("How often is this medication given (in days): ");
         int interval = int.Parse(Console.ReadLine());
-
-        medications.Add(medication,interval);
-
         Console.Write("Enter last administration date (MM/DD/YYYY): ");
         DateTime dateAdministered = DateTime.Parse(Console.ReadLine());
+        medications.Add(medication,interval);
         medicationAdministered[medication] = dateAdministered;
+        }
+        catch (System.FormatException)
+        {
+            Console.WriteLine("You entered something incorrectly. Please try again.");
+        }
+
+     
     }
 
     public void RemoveMedication(){
@@ -38,15 +45,23 @@ public class HealthRecord
     }
     
     public void EnterVetRecord(){
+        try
+        {
         Console.Write("Enter vet visit (MM/DD/YYYY): ");
         DateTime vetApptDate = DateTime.Parse(Console.ReadLine());
         vetVisits.Add(vetApptDate);
+        }
+        catch (System.FormatException)
+        {
+            Console.WriteLine("You entered something incorrectly. Please try again.");
+        }
     }
 
     public void EnterVaccinationRecord(){
         Console.Write("Enter vaccionation: ");
         string vaccination = Console.ReadLine();
-
+        try
+        {
         Console.Write("Enter date given (MM/DD/YYYY): ");
         DateTime vaccinationDate = DateTime.Parse(Console.ReadLine());
 
@@ -56,6 +71,11 @@ public class HealthRecord
             vaccinationRecords.Add(vaccination,dates);
         }else{
             vaccinationRecords[vaccination].Add(vaccinationDate);
+        }
+        }
+        catch (System.FormatException)
+        {
+            Console.WriteLine("You entered something incorrectly. Please try again.");
         }
     }
 

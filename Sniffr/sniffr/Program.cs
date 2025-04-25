@@ -162,32 +162,32 @@ class Program
             }
             var reminderChoice = consoleUI.DisplayMenu(reminderOptions);
 
-        if (reminderChoice == "Reminder List"){
-            if (File.ReadAllText("reminders.txt").Length == 0){
+            if (reminderChoice == "Reminder List"){
+                if (File.ReadAllText("reminders.txt").Length == 0){
                 // message if no reminders added
                 Console.WriteLine("Add some reminders!");
-            }else{
-                foreach(string reminder in currentPetReminders.remindersList){
-                Console.WriteLine(reminder);
+                }else{
+                    foreach(string reminder in currentPetReminders.remindersList){
+                    Console.WriteLine(reminder);
+                    }
                 }
-            }
-        }else if (reminderChoice == "Add Reminder"){
-            currentPetReminders.AddReminder();
-            Console.WriteLine("Reminder Added!");
-            SaveReminders(currentPetReminders.remindersList);
-        }else if (reminderChoice == "Delete Reminder"){
-            if (File.ReadAllText("reminders.txt").Length == 0){
-                // message if no reminders added
-                Console.WriteLine("Add some reminders to delete!");
-            }else{
-                var itemToDelete = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                .Title("Scroll to select a reminder to delete: ")
-                .AddChoices(currentPetReminders.remindersList)
-                );
-                currentPetReminders.DeleteReminder(itemToDelete);
-                Console.WriteLine("Deleted!");
+            }else if (reminderChoice == "Add Reminder"){
+                currentPetReminders.AddReminder();
+                Console.WriteLine("Reminder Added!");
                 SaveReminders(currentPetReminders.remindersList);
+            }else if (reminderChoice == "Delete Reminder"){
+                if (File.ReadAllText("reminders.txt").Length == 0){
+                    // message if no reminders added
+                    Console.WriteLine("Add some reminders to delete!");
+                }else{
+                    var itemToDelete = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                    .Title("Scroll to select a reminder to delete: ")
+                    .AddChoices(currentPetReminders.remindersList)
+                    );
+                    currentPetReminders.DeleteReminder(itemToDelete);
+                    Console.WriteLine("Deleted!");
+                    SaveReminders(currentPetReminders.remindersList);
                 }   
             }
 
@@ -197,7 +197,7 @@ class Program
         Console.Write("\nEnter any key to continue (type q to quit): ");
         response = Console.ReadLine();
         Console.Clear();
-        };
+    };
     
         
 
@@ -243,7 +243,12 @@ class Program
     public static void SaveVetData(Pet currentPet){
         List<DateTime> vetData = currentPet.healthRecord.vetVisits;
         string jsonString = JsonSerializer.Serialize(vetData);
-        File.WriteAllText("vetvisits.txt",jsonString);
+        if(vetData.Count == 0){
+            File.WriteAllText("vetvisits.txt","");
+        }else{
+            File.WriteAllText("vetvisits.txt",jsonString);
+            // Console.WriteLine("\nData Saved\n");
+            }
         // Console.WriteLine("\nData Saved\n"); 
     }
 
@@ -257,8 +262,12 @@ class Program
     public static void SaveVaccinationRecord(Pet currentPet){
         Dictionary<string,List<DateTime>> vaccinationData = currentPet.healthRecord.vaccinationRecords;
         string jsonString = JsonSerializer.Serialize(vaccinationData);
-        File.WriteAllText("vaccinations.txt",jsonString);
-        // Console.WriteLine("\nData Saved\n"); 
+        if(vaccinationData.Count == 0){
+            File.WriteAllText("vaccinations.txt","");
+        }else{
+            File.WriteAllText("vaccinations.txt",jsonString);
+            // Console.WriteLine("\nData Saved\n");
+            }
     }
 
     public static Dictionary<string,List<DateTime>> LoadVaccinationRecord(Pet currentPet){

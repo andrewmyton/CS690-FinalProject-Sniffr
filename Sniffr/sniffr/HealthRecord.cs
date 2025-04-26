@@ -11,6 +11,7 @@ public class HealthRecord
 
 
     public void AddMedication(){
+        // adds medications infomation
         Console.Write("Enter medication to add: ");
         string medication = Console.ReadLine();
         
@@ -32,6 +33,7 @@ public class HealthRecord
     }
 
     public void RemoveMedication(){
+        // removes medications from the medication dictionary
         List<string> medicationList = medications.Keys.ToList();
         var medicationToRemove = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
@@ -45,6 +47,7 @@ public class HealthRecord
     }
     
     public void EnterVetRecord(){
+        // adds vet record entry
         try
         {
         Console.Write("Enter vet visit (MM/DD/YYYY): ");
@@ -58,6 +61,7 @@ public class HealthRecord
     }
 
     public void EnterVaccinationRecord(){
+        // add a vaccination record entry
         Console.Write("Enter vaccionation: ");
         string vaccination = Console.ReadLine();
         try
@@ -80,6 +84,7 @@ public class HealthRecord
     }
 
     public void GiveMedication(Dictionary<string,int> medications){
+        // gives a dose of medication, updating when the next dose is needed to be given
         List<string> medicationList= new List<string>();
         foreach (string medication in medications.Keys){
             medicationList.Add(medication);
@@ -97,6 +102,7 @@ public class HealthRecord
     }
 
     public void ViewMedicationDue(Dictionary<string,int> medications,Dictionary<string, DateTime> medicationAdministered){
+        // displays when all medications are due next
         if (medications.Count() == 0){
             Console.WriteLine("Add some medications!");
         }else{
